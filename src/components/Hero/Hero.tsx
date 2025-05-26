@@ -49,7 +49,7 @@ const Hero = () => {
             Boost your balance and start with bonus
           </span>
 
-          <p className="font-[poppins] text-left text-[#B8BCD0]">
+          <p className="font-[poppins] text-left text-[#B8BCD0] max-w-[350px]">
             <span className="font-semibold">
               Join us and get more from the very beginning!
             </span>

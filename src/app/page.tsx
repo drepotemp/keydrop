@@ -93,7 +93,7 @@ export default function Home() {
                   src={"/assets/images/" + e.color + "-box-bg.svg"}
                   alt="box bg-image"
                   fill
-                  className="rounded-[inherit]"
+                  className="rounded-[inherit] object-cover"
                 />
               </figure>
 
@@ -114,7 +114,7 @@ export default function Home() {
                   </figure>
                 </div>
 
-                <section className="flex flex-col justify-center items-start max-w-[55%]">
+                <section className="flex flex-col justify-center items-start w-[60%]">
                   <span
                     style={{ color: e.textColor }}
                     className={`break-words font-semibold mb-[6px]`}
