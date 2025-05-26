@@ -1,0 +1,7 @@
+.popular-vignette {
+  background: linear-gradient(
+    to top,
+    rgba(20, 20, 20, 0.7) 0%,
+    rgba(20, 20, 20, 0) 100%
+  );
+}
