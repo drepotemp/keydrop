@@ -19,13 +19,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body className="flex justify-center items-center bg-[#17171C]">
-        <section id="root" className="w-full h-full sm:hidden">
+        <section id="root" className="w-full h-full max-w-[2000px]">
           {children}
         </section>
 
-        <section className="w-full h-full hidden sm:flex justify-center items-center">
-          <span className="font-[poppins] text-white">Desktop mode in progress.<br/>Please wait, thanks.</span>
-        </section>
       </body>
     </html>
   );

@@ -67,3 +67,19 @@ body {
 .skins::-webkit-scrollbar {
   display: none;             /* Chrome, Safari */
 }
+
+
+.boxes {
+  background-color: rgba(13, 13, 15, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Disable glassmorphism on small screens (<640px) */
+@media (max-width: 639px) {
+  .boxes {
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
