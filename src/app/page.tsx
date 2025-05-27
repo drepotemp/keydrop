@@ -242,7 +242,7 @@ export default function Home() {
 
         {/* desktop */}
         {/* writeup */}
-        <section className="max-sm:hidden mt-[80px] w-[40%] flex flex-col justify-center items-start">
+        <section className="max-sm:hidden mt-[150px] w-[40%] flex flex-col justify-center items-start">
           <section className="w-full flex flex-col justify-start items-start font-[poppins]">
             <span
               style={{ fontSize: `${titleFontSize}px` }}
@@ -273,7 +273,7 @@ export default function Home() {
             </span>
           </section>
 
-          <figure className="w-[50%] h-[20px] relative sm:mt-[30px] lg:mt-[95px]">
+          <figure className="w-[50%] h-[20px] relative sm:mt-[30px] lg:mt-[150px]">
             <Image
               src={"/assets/images/bars.svg"}
               alt="bars img"
@@ -312,7 +312,7 @@ export default function Home() {
         </span>
 
         {/* DESKTOP */}
-        <section className="relative max-sm:hidden  mt-[-300px] w-full flex justify-between items-end">
+        <section className="relative max-sm:hidden  mt-[-400px] w-full flex justify-between items-end">
           <section className="w-[48%] rounded-r-[8px] h-full flex flex-col justify-start pl-[40px] pt-[90px] pb-[200px] items-start bg-[#1B1B22]">
             <span
               style={{ fontSize: `${titleFontSize}px` }}
