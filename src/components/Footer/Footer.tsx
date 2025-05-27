@@ -45,7 +45,7 @@ const Footer = () => {
       </figure>
 
       {/* desktop Footer */}
-      <section className="w-full flex justify-between items-center max-lg:hidden mt-[50px] px-[20px]">
+      <section className="w-full flex justify-between items-center max-lg:hidden mt-[50px]">
         <section className="flex flex-col justify-start items-start w-[33%]">
           <figure className="w-[200px] h-[45px] relative">
             <Image

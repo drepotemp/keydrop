@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
-import Vignette from "../Vignette/Vignette";
 import Image from "next/image";
-import "./style.css";
 import { useEffect, useRef, useState } from "react";
 
 const Hero = () => {
@@ -98,13 +96,13 @@ const Hero = () => {
         className="w-full hero absolute top-0 left-0 h-fit"
       >
         {/* Nav */}
-        <nav className="w-full h-[80px] flex justify-between items-center px-[12px] sm:px-0">
+        <nav className="w-full h-[80px] flex justify-between items-center sm:px-0">
           <section className="h-full flex justify-start items-center">
-            <figure className="h-[60%] max-sm:w-[30vw] sm:w-[200px] relative mr-[40px] max-sm:mr-[20px]">
+            <figure className="h-[60%] max-sm:w-[25vw] sm:w-[200px] relative mr-[40px] max-sm:mr-[20px]">
               <Image src={"/assets/images/logo.svg"} fill alt="logo" />
             </figure>
 
-            <section className="flex flex-col justify-start items-start max-sm:text-[14px]">
+            <section className="flex flex-col justify-start items-start max-sm:text-[12px]">
               <section className="flex justify-start items-center">
                 <div className="bg-[#77FF9D] w-[10px] h-[10px] rounded-[50%] mr-[9px]"></div>
                 <span className="font-[poppins] font-semibold text-white">
@@ -118,7 +116,7 @@ const Hero = () => {
             </section>
           </section>
 
-          <button className="relative flex justify-center items-center h-[60%] max-sm:w-[35vw] w-[250px] rounded-[4px] bg-[#FFCB77] text-[#332918] font-[poppins] font-bold overflow-hidden group transition duration-300 ease-in-out hover:bg-[#332918] hover:text-[#FFCB77] hover:shadow-[0_0_25px_#FFCB77]">
+          <button className="relative flex justify-center items-center h-[60%] max-sm:w-[35vw] max-sm:h-[50%] w-[250px] rounded-[4px] bg-[#FFCB77] text-[#332918] font-[poppins] font-bold overflow-hidden group transition duration-300 ease-in-out hover:bg-[#332918] hover:text-[#FFCB77] hover:shadow-[0_0_25px_#FFCB77]">
             {/* Glow animation layer */}
             <span className="absolute inset-0 bg-[#FFCB77] opacity-0 group-hover:opacity-10 blur-xl transition-all duration-500 pointer-events-none"></span>
 

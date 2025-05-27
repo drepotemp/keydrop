@@ -20,7 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </head>
       {/* bg-[#17171C] */}
       <body className="flex justify-center items-center bg-[#17171C]">
-        <section id="root" className="w-full h-full max-w-[2000px] border border-red-500">
+        <section id="root" className="w-full h-full max-w-[2000px]">
           {children}
         </section>
 
