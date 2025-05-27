@@ -357,7 +357,7 @@ export default function Home() {
         </section>
 
         {/* skins */}
-        <section className="z-[2] sm:pl-[12px] skins sm:mt-[-90px] w-[100vw] flex justify-start items-center overflow-x-scroll mb-[20px]">
+        <section className="z-[2] skins sm:mt-[-90px] w-full flex justify-start items-center overflow-x-scroll mb-[20px]">
           <Skin />
           <Skin />
           <Skin />
@@ -373,6 +373,7 @@ export default function Home() {
           <Skin />
           <Skin />
           <Skin />
+          
         </section>
       </section>
 
