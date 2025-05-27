@@ -4,7 +4,7 @@ import Hero from "@/components/Hero/Hero";
 import Navbar from "@/components/Navbar/Navbar";
 import Popular from "@/components/Popular/Popular";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Skin = () => {
   return (
@@ -76,16 +76,74 @@ export default function Home() {
     },
   ]);
 
+  const wrapperRef = useRef(null);
+  const [parentWidth, setParentWidth] = useState(0);
+
+  //Track wrapper width
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setParentWidth(entry.contentRect.width);
+      }
+    });
+
+    observer.observe(wrapperRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const [titleFontSize, setTitleFontSize] = useState<number>(0);
+  const [descFontSize, setDescFontSize] = useState<number>(0);
+
+  //FOR TITLE FONTS
+  //Set title font size to 0.022% of wrapper width(for fluid responsiveness)
+  useEffect(() => {
+    //Don't set if already set
+    if (parentWidth > 900 && titleFontSize == Math.round(0.022 * parentWidth)) {
+      return; //means font size is already set
+    } else {
+      if (parentWidth > 900) {
+        //Set fontsize (if not already set)
+        return setTitleFontSize(Math.round(0.022 * parentWidth));
+      }
+    }
+
+    //For smaller screen widths, to prevent a ridiculously small font size, set a fixed font size
+    setTitleFontSize(20);
+  }, [parentWidth]);
+
+  //FOR DESCRIPTION FONTS
+  //Set description font size to 0.01% of wrapper width(for fluid responsiveness)
+  useEffect(() => {
+    //Don't set if already set
+    if (parentWidth > 1200 && descFontSize == Math.round(parentWidth * 0.01)) {
+      return; //means font size is already set
+    } else {
+      if (parentWidth > 1200) {
+        //Set fontsize (if not already set)
+        return setDescFontSize(Math.round(0.01 * parentWidth));
+      }
+    }
+
+    //For smaller screen widths, to prevent a ridiculously small font size, set a fixed font size
+    setDescFontSize(12);
+  }, [parentWidth]);
+
   return (
-    <main className="main w-full min-h-screen relative flex flex-col justify-start items-center sm:overflow-x-hidden">
+    <main
+      ref={wrapperRef}
+      className="main w-full min-h-screen relative flex flex-col justify-start items-center overflow-x-hidden px-[20px]"
+    >
       <Hero />
-      {/* section */}
-      <section className="boxes w-full sm:w-[97%] sm:p-[15px] sm:border-[#23232D] sm:border sm:rounded-[7px] flex flex-col sm:flex-row sm:justify-between justify-start items-center max-sm:px-[12px] sm:mt-[-40px] font-[poppins]">
+      {/* (BOXES) section */}
+      <section className="w-full h-fit sm:flex-wrap boxes sm:p-[15px] sm:border-[#23232D] sm:border sm:rounded-[7px] flex flex-col sm:flex-row sm:justify-between justify-start items-center max-sm:px-[12px]  font-[poppins]">
         {items.map((e, i) => {
           return (
             <section
               key={i}
-              className={`max-sm:w-full max-sm:my-[4px] max-sm:h-[120px] sm:h-[180px] sm:w-[32%] rounded-[6px] relative`}
+              className={`max-sm:w-full max-sm:my-[4px] max-sm:h-[120px] sm:h-[200px] m-[9px] sm:flex-grow min-w-[300px] rounded-[6px] relative`}
             >
               {/* Box bg img */}
               <figure className="w-full h-full relative rounded-[inherit]">
@@ -131,9 +189,8 @@ export default function Home() {
         })}
       </section>
 
-      {/* secetion */}
-
-      <section className="w-full px-[12px] sm:pr-0 sm:pl-[40px] flex sm:flex-row flex-col sm:justify-between justify-start items-center">
+      {/*(Your cs2 inventory) secetion */}
+      <section className="w-full sm:pr-0 flex sm:flex-row flex-col sm:justify-between sm:items-center justify-start items-center">
         {/* mobile */}
         <figure className="sm:hidden w-full h-[50vh] relative">
           <Image
@@ -176,20 +233,29 @@ export default function Home() {
 
         {/* desktop */}
         {/* writeup */}
-        <section className="max-sm:hidden w-[40%] flex flex-col justify-center items-start">
+        <section className="max-sm:hidden  w-[40%] flex flex-col justify-center items-start">
           <section className="w-full flex flex-col justify-start items-start font-[poppins]">
-            <span className="text-white text-left font-[poppins] font-medium max-w-[85%] text-[35px] mb-[20px]">
+            <span
+              style={{ fontSize: `${titleFontSize}px` }}
+              className="text-white text-left font-[poppins] font-medium max-w-[85%] mb-[20px]"
+            >
               Your CS2 inventory deserves an update
             </span>
 
-            <span className="text-[#B8BCD0] mb-[20px] text-left">
+            <span
+              style={{ fontSize: `${descFontSize}px` }}
+              className="text-[#B8BCD0] mb-[20px] text-left"
+            >
               Say goodbye to boring items and refresh your inventory with the
               hottest skins from the latest collections. With our smart exchange
               system, you can browse tailored offers and instantly swap for
               top-tier gear.
             </span>
 
-            <span className="text-[#B8BCD0] text-center">
+            <span
+              style={{ fontSize: `${descFontSize}px` }}
+              className="text-[#B8BCD0] text-center sm:text-left"
+            >
               <span className="text-[#A075F0] font-semibold">
                 {" "}
                 Fast, easy, and rewarding
@@ -198,7 +264,7 @@ export default function Home() {
             </span>
           </section>
 
-          <figure className="w-[50%] h-[20px] relative mt-[70px]">
+          <figure className="w-[50%] h-[20px] relative sm:mt-[30px] lg:mt-[95px]">
             <Image
               src={"/assets/images/bars.svg"}
               alt="bars img"
@@ -209,7 +275,10 @@ export default function Home() {
         </section>
 
         {/* KNIFE img */}
-        <figure className="max-sm:hidden w-[57%] h-[130vh] relative">
+        <figure
+          style={{ height: `${Math.round(parentWidth * 0.57)}px` }}
+          className="max-sm:hidden w-[57%] relative"
+        >
           <Image
             src={"/assets/images/knife-img-dk.svg"}
             alt="knife img"
@@ -219,10 +288,10 @@ export default function Home() {
         </figure>
       </section>
 
-      {/* section */}
-      <section className="sm:mt-[-30vh] w-full flex flex-col justify-start items-center font-[poppins]">
+      {/*(Obtain new skins) section */}
+      <section className=" w-full flex flex-col justify-start items-center font-[poppins]">
         {/* mobile */}
-        <span className="sm:hidden  text-white text-center font-[poppins] font-medium text-[20px] max-sm:max-w-[79vw] mb-[20px]">
+        <span className="sm:hidden text-white text-center font-[poppins] font-medium max-sm:max-w-[79vw] mb-[20px]">
           Obtain new skins today
         </span>
 
@@ -234,13 +303,19 @@ export default function Home() {
         </span>
 
         {/* DESKTOP */}
-        <section className="max-sm:hidden w-full flex justify-between items-end h-[80vh]">
-          <section className="w-[48%] pl-[30px] rounded-r-[8px] h-full flex flex-col justify-center items-start bg-[#1B1B22]">
-            <span className="text-white text-center font-[poppins] font-medium text-[35px]  mb-[20px]">
+        <section className="relative max-sm:hidden w-full flex justify-between items-end">
+          <section className="w-[48%] rounded-r-[8px] h-full flex flex-col justify-start pl-[40px] pt-[90px] pb-[200px] items-start bg-[#1B1B22]">
+            <span
+              style={{ fontSize: `${titleFontSize}px` }}
+              className="text-white text-left font-[poppins] font-medium  mb-[20px]"
+            >
               Obtain new skins today
             </span>
 
-            <span className="text-[#B8BCD0] text-left max-w-[85%]">
+            <span
+              style={{ fontSize: `${descFontSize}px` }}
+              className="text-[#B8BCD0] text-left max-w-[85%]"
+            >
               Thousands of new CS2 items are being added daily, making it even
               easier for you to find the perfect option. Use our intuitive
               interface to navigate through various skin types and get the drop
@@ -249,9 +324,9 @@ export default function Home() {
           </section>
 
           {/* bars and controls */}
-          <section className="flex flex-col items-end w-[48%] relative mb-[13vh]">
+          <section className="flex flex-col items-end w-[48%] left-0">
             {/* controls */}
-            <section className="absolute top-0 z-[2]  right-[12px] flex items-center">
+            <section className=" z-[2]  right-[12px] flex items-center">
               <figure className="cursor-pointer w-[50px] h-[50px] relative">
                 <Image src={"/assets/icons/left.svg"} alt="control img" fill />
               </figure>
@@ -273,7 +348,7 @@ export default function Home() {
         </section>
 
         {/* skins */}
-        <section className="sm:pl-[12px] skins sm:mt-[-20vh] w-[100vw] flex justify-start items-center overflow-x-scroll mb-[20px]">
+        <section className="z-[2] sm:pl-[12px] skins sm:mt-[-90px] w-[100vw] flex justify-start items-center overflow-x-scroll mb-[20px]">
           <Skin />
           <Skin />
           <Skin />
@@ -292,17 +367,17 @@ export default function Home() {
         </section>
       </section>
 
-      {/* section */}
-      <section className="px-[12px] w-full flex flex-col justify-start items-center">
-        <span className="sm:pl-[12px] mt-1 sm:my-[20px] text-white text-center font-[poppins] font-medium text-[20px] sm:text-[35px] max-sm:max-w-[79vw] sm:w-full sm:text-left">
+      {/*(Discover our events) section */}
+      <section className="w-full flex flex-col justify-start items-center">
+        <span className="mt-1 sm:my-[20px] text-white text-center font-[poppins] font-medium text-[20px] sm:text-[35px] max-sm:max-w-[79vw] sm:w-full sm:text-left">
           Discover our events
         </span>
 
-        <section className="sm:px-[12px] mt-[22px] flex w-full flex-col sm:flex-row sm:justify-between justify-start items-center">
+        <section className="sm:hidden mt-[22px] flex w-full flex-col sm:flex-row sm:justify-between justify-start items-center">
           {[1, 2, 3].map((e, i) => {
             return (
               <figure
-                className="w-full sm:w-[32%] h-[160px] relative rounded-[6px] mb-[12px]"
+                className="w-full sm:w-[32%] h-[200px] relative rounded-[6px] mb-[12px]"
                 key={i}
               >
                 <Image
@@ -316,15 +391,37 @@ export default function Home() {
           })}
         </section>
 
-        <button className="mt-[12px] w-full sm:w-[33%] h-[50px] rounded-[4px] text-[#332918] font-[poppins] font-bold bg-[#FFCB77]">
-          CHECK NEW EVENT
+        <section className="max-sm:hidden mt-[22px] flex w-full flex-col sm:flex-row sm:justify-between justify-start items-center">
+          {[1, 2, 3].map((e, i) => {
+            return (
+              <figure
+                style={{
+                  //Height should be width/2
+                  height: `${Math.round(Math.round(parentWidth / 3) / 2)}px`,
+                }}
+                className="w-full sm:w-[32%] relative rounded-[6px] mb-[12px]"
+                key={i}
+              >
+                <Image
+                  src={"/assets/images/event-" + e + ".png"}
+                  alt="event image"
+                  fill
+                  className="rounded-[inherit]"
+                />
+              </figure>
+            );
+          })}
+        </section>
+        <button className="relative mt-[12px] w-full sm:w-[33%] h-[50px] rounded-[8px] font-[poppins] font-bold text-[#332918] bg-[#FFCB77] overflow-hidden transition duration-300 ease-in-out hover:text-[#FFCB77] hover:bg-[#332918] hover:animate-glow shadow-md group">
+          <span className="absolute inset-0 bg-[#FFCB77] opacity-0 group-hover:opacity-10 blur-lg transition-all duration-500"></span>
+          <span className="relative z-10">CHECK NEW EVENT</span>
         </button>
       </section>
 
-      {/* section */}
-      <section className="sm:mt-[150px] w-full flex flex-col sm:flex-row sm:justify-between sm:items-start sm:h-[85vh] px-[12px] justify-start items-center">
+      {/*(About us) section */}
+      <section className="w-full flex mt-[40px] flex-col lg:flex-row lg:justify-between lg:items-start justify-start items-center">
         {/* mobile */}
-        <figure className="sm:hidden w-full h-[50vh] relative">
+        <figure className="lg:hidden w-full h-[50vh] relative">
           <Image
             src={"/assets/images/money-guy.png"}
             alt="money guy img"
@@ -333,31 +430,34 @@ export default function Home() {
           />
         </figure>
 
-        <span className="sm:hidden my-[20px] text-white text-center font-[poppins] font-medium text-[20px] max-sm:max-w-[79vw]">
+        <span className="lg:hidden my-[20px] text-white text-center font-[poppins] font-medium text-[20px] max-sm:max-w-[79vw]">
           About us
         </span>
 
-        <span className="sm:hidden text-[#B8BCD0] mb-[20px] text-center">
+        <span className="lg:hidden max-w-[600px] text-[#B8BCD0] mb-[20px] text-center">
           KeyDrop has been a trusted part of the Counter-Strike community since
           2018, offering players access to their favorite in-game items in a
           fast, fun, and secure way.
         </span>
 
-        <span className="sm:hidden text-[#B8BCD0] mb-[20px] text-center">
+        <span className="lg:hidden max-w-[600px] text-[#B8BCD0] mb-[20px] text-center">
           With a wide selection of skins, regular events and promotions, a
           detailed item wiki, and a dedicated CS2 blog, we go beyond just case
           openings — we create an immersive experience.
         </span>
 
-        <span className="sm:hidden text-[#B8BCD0] text-center font-semibold">
+        <span className="lg:hidden max-w-[600px] text-[#B8BCD0] text-center font-semibold">
           Our platform is built with players in mind, backed by 24/7 customer
           support and a commitment to comfort, transparency, and excitement at
           every step.
         </span>
 
         {/* desktop */}
-        <section className="max-sm:hidden h-[95vh] mb-[90px]  w-full flex justify-between items-start">
-          <figure className="w-[50%] h-full relative">
+        <section className="max-lg:hidden w-full flex sm:flex-col lg:flex-row justify-between items-center">
+          <figure
+            style={{ height: `${Math.round(parentWidth / 2.5)}px` }}
+            className="w-[50%] h-full relative"
+          >
             <Image
               src={"/assets/images/money-guy.png"}
               alt="money guy img"
@@ -366,24 +466,35 @@ export default function Home() {
             />
           </figure>
 
-          <section className="h-[75%]  flex w-[45%] flex-col justify-center pl-[70px] items-start rounded-l-[8px] bg-[#1B1B22]">
-            <span className="my-[20px] text-white text-left font-[poppins] font-medium text-[35px] w-full">
+          <section
+            style={{ height: `${Math.round(Math.round(parentWidth / 3.7))}px`, paddingLeft:`${Math.round((Math.round(parentWidth/2)) *0.05 )}px` }}
+            className="flex w-[45%] flex-col justify-center items-start rounded-l-[8px] bg-[#1B1B22]"
+          >
+            <span
+            style={{fontSize:`${titleFontSize}px`}}
+            className="mb-[20px] text-white text-left font-[poppins] font-medium  w-full">
               About us
             </span>
 
-            <span className="text-[#B8BCD0] mb-[20px] text-left w-[79%]">
+            <span
+            style={{fontSize:`${descFontSize}px`}}
+            className="text-[#B8BCD0] mb-[20px] text-left w-[95%] font-semibold">
               KeyDrop has been a trusted part of the Counter-Strike community
               since 2018, offering players access to their favorite in-game
               items in a fast, fun, and secure way.
             </span>
 
-            <span className="text-[#B8BCD0] mb-[20px] text-left w-[79%]">
+            <span
+            style={{fontSize:`${descFontSize}px`}}
+            className="text-[#B8BCD0] mb-[20px] text-left w-[95%]">
               With a wide selection of skins, regular events and promotions, a
               detailed item wiki, and a dedicated CS2 blog, we go beyond just
               case openings — we create an immersive experience.
             </span>
 
-            <span className="text-[#B8BCD0] text-left w-[79%] font-semibold">
+            <span
+            style={{fontSize:`${descFontSize}px`}}
+            className="text-[#B8BCD0] text-left w-[95%] font-semibold">
               Our platform is built with players in mind, backed by 24/7
               customer support and a commitment to comfort, transparency, and
               excitement at every step.
